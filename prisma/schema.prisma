@@ -1,0 +1,34 @@
+datasource db {
+  provider = "mongodb"
+  url      = "mongodb+srv://usama:vaival321@cluster0.oqh4aef.mongodb.net/prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Level {
+  id          String         @id @default(cuid()) @map("_id")
+  code        String
+  name        String
+  isRoot      Boolean        @default(false)
+  LevelAttributeIds   String[]    
+  LevelAttribute  LevelAttribute?   @relation(fields: [LevelAttributeIds], references: [id])
+}
+
+model LevelAttribute {
+   id          String                @id @default(cuid()) @map("_id")
+  code        String
+  name        String
+  description String?
+  attribute   LevelAtttributeValue[]
+  levels      Level[]
+}
+model LevelAtttributeValue {
+  id            String            @id @default(cuid()) @map("_id")
+  code          String
+  name          String
+  isRoot        Boolean           @default(false)
+  attributeId   String            @map("_attributeId")
+  attribute     LevelAttribute    @relation(fields: [attributeId], references: [id])
+}
