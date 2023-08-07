@@ -2,25 +2,29 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function createLevel(data: any) {
-  test();
+  return await test();
 }
 
 async function test() {
   try {
     const levelsWithAttributes = await prisma.level.findMany({
       include: {
-        LevelAttribute: true,
+        LevelAttributes: {
+          include: {
+            attribute: true,
+          },
+        },
       },
     });
 
-    console.log(levelsWithAttributes);
+    // console.log(levelsWithAttributes);
     // const updatedLevel = await prisma.level.update({
     //   where: {
-    //     id: "clkzck6mf0000m3aspo03zyzx",
+    //     id: "64cf9b272d2383e73232e079",
     //   },
     //   data: {
     //     LevelAttributeIds: {
-    //       set: ["clkzck7ep0001m3as6b1zvwnc"],
+    //       set: ["64cf9b282d2383e73232e07a"],
     //     },
     //   },
     // });
@@ -34,27 +38,28 @@ async function test() {
     //   },
     // });
 
-    // // Add dummy LevelAttribute records
+    // Add dummy LevelAttribute records
     // const attribute1 = await prisma.levelAttribute.create({
     //   data: {
-    //     code: "A1",
-    //     name: "Attribute 1",
-    //     description: "Description for Attribute 1",
+    //     code: "A2",
+    //     name: "Attribute 2",
+    //     description: "Description for Attribute 2",
     //     // levelIds: level1.id,
     //   },
     // });
 
-    // Add dummy LevelAttributeValue records
+    // // Add dummy LevelAttributeValue records
     // const attributeValue1 = await prisma.levelAtttributeValue.create({
     //   data: {
-    //     code: "AV1",
-    //     name: "Attribute Value 1",
+    //     code: "AV2",
+    //     name: "Attribute Value 2",
     //     isRoot: true,
-    //     // attributeId: attribute1.id,
+    //     attributeId: attribute1.id,
     //   },
     // });
 
     console.log("Dummy records added successfully!");
+    return levelsWithAttributes;
   } catch (error) {
     console.error("Error adding dummy records:", error);
   } finally {

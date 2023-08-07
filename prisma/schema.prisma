@@ -8,27 +8,31 @@ generator client {
 }
 
 model Level {
-  id          String         @id @default(cuid()) @map("_id")
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
   code        String
   name        String
   isRoot      Boolean        @default(false)
-  LevelAttributeIds   String[]    
-  LevelAttribute  LevelAttribute?   @relation(fields: [LevelAttributeIds], references: [id])
+
+    LevelAttributeIds String[]   @db.ObjectId
+  LevelAttributes  LevelAttribute[] @relation(fields: [LevelAttributeIds], references: [id])
 }
 
 model LevelAttribute {
-   id          String                @id @default(cuid()) @map("_id")
+   id          String                @id @default(auto()) @map("_id") @db.ObjectId
   code        String
   name        String
   description String?
   attribute   LevelAtttributeValue[]
-  levels      Level[]
+
+    levelIDs String[] @db.ObjectId
+  levels   Level[]   @relation(fields: [levelIDs], references: [id])
 }
+ 
 model LevelAtttributeValue {
-  id            String            @id @default(cuid()) @map("_id")
+  id            String             @id @default(auto()) @map("_id") @db.ObjectId
   code          String
   name          String
   isRoot        Boolean           @default(false)
-  attributeId   String            @map("_attributeId")
+  attributeId   String            @db.ObjectId
   attribute     LevelAttribute    @relation(fields: [attributeId], references: [id])
 }
